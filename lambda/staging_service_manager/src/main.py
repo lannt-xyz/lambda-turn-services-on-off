@@ -2,10 +2,6 @@ import boto3
 import os
 import logging
 import watchtower
-from dotenv import load_dotenv
-
-# Load environment variables from .env file (for local testing)
-load_dotenv()
 
 # Get environment variables for resource identifiers
 CLUSTER_NAME = os.getenv("CLUSTER_NAME", "staging-cluster")
@@ -24,7 +20,8 @@ def lambda_handler(event, context):
     logger.addHandler(
         watchtower.CloudWatchLogHandler(
             log_group=LOG_GROUP,
-            create_log_group=True
+            create_log_group=True,
+            stream_name="{function_name}-{request_id}"
         )
     )
 
